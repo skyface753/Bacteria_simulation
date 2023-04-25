@@ -28,7 +28,7 @@ public class SimpleDemoGA {
         System.out.println("Generation: " + demo.generationCount + " Fittest: " + demo.population.fittest);
 
         //While population gets an individual with maximum fitness
-        while (demo.population.fittest < 10) {
+        while (demo.population.fittest < 7) {
             ++demo.generationCount;
 
             //Do selection
@@ -97,19 +97,23 @@ public class SimpleDemoGA {
         int mutationPoint = rn.nextInt(population.individuals[0].geneLength);
 
         //Flip values at the mutation point
-        if (fittest.genes[mutationPoint] == 0) {
-            fittest.genes[mutationPoint] = 1;
-        } else {
-            fittest.genes[mutationPoint] = 0;
-        }
+        fittest.genes[mutationPoint] = fittest.genes[mutationPoint] == 0 ? 1 : 0;
+
+        // if (fittest.genes[mutationPoint] == 0) {
+        //     fittest.genes[mutationPoint] = 1;
+        // } else {
+        //     fittest.genes[mutationPoint] = 0;
+        // }
 
         mutationPoint = rn.nextInt(population.individuals[0].geneLength);
+        
+        secondFittest.genes[mutationPoint] = secondFittest.genes[mutationPoint] == 0 ? 1 : 0;
 
-        if (secondFittest.genes[mutationPoint] == 0) {
-            secondFittest.genes[mutationPoint] = 1;
-        } else {
-            secondFittest.genes[mutationPoint] = 0;
-        }
+        // if (secondFittest.genes[mutationPoint] == 0) {
+        //     secondFittest.genes[mutationPoint] = 1;
+        // } else {
+        //     secondFittest.genes[mutationPoint] = 0;
+        // }
     }
 
     //Get fittest offspring
@@ -142,8 +146,8 @@ public class SimpleDemoGA {
 class Individual {
 
     int fitness = 0;
-    int[] genes = new int[10];
-    int geneLength = 10;
+    int[] genes = new int[7];
+    int geneLength = 7;
 
     public Individual() {
         Random rn = new Random();
@@ -156,17 +160,18 @@ class Individual {
         fitness = 0;
     }
 
+    
+
     //Calculate fitness
     public void calcFitness() {
-
         fitness = 0;
         for (int i = 0; i < genes.length; i++) {
             if (genes[i] == 1) {
                 ++fitness;
             }
         }
+        
     }
-
 }
 
 //Population class
