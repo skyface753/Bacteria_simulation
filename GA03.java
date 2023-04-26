@@ -71,18 +71,16 @@ class Population {
         }
         List<Individual> newPopulation = new ArrayList<>();
         // Individuen auswählen
-        for (int i = 0; i < anzahlIndividuen; i++) {
-
-            int random = (int) (Math.random() * 100);
-            int sum = 0;
-            for (Individual ind : population) {
-                sum += ind.fitnessProzent * 100;
-                if (sum >= random) {
-                    newPopulation.add(ind);
-                    break;
-                }
+        List<Individual> gluecksrad = new ArrayList<>();
+        for (Individual i : population) {
+            for (int j = 0; j < i.fitnessProzent * 100; j++) {
+                gluecksrad.add(i);
             }
 
+        }
+        for (int i = 0; i < anzahlIndividuen; i++) {
+            int index = (int) (Math.random() * gluecksrad.size());
+            newPopulation.add(gluecksrad.get(index));
         }
         population = newPopulation;
         return this;
