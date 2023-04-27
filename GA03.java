@@ -6,15 +6,16 @@ import java.util.Scanner;
 public class GA03 {
     public void einfacherGenetischerAlgorithmus(int maxGeneration) {
         Scanner scanner = new Scanner(System.in);
-        int generation = 0;
+
         Population p = new Population();
         double avgFitness = p.evaluation();
         while (avgFitness < 200 &&
-                generation < maxGeneration) {
-            generation++;
+                p.generation < maxGeneration) {
+            p.generation++;
             p = p.selection(); // age biased replacement
             p.crossover();
             p.mutation();
+
             avgFitness = p.evaluation();
             // scanner.nextLine();
         }
@@ -33,7 +34,7 @@ class Population {
     static int anzahlIndividuen = 20;
 
     private List<Individual> population = new ArrayList<>();
-    private int generation = 0;
+    public int generation = 0;
 
     public Population() {
         for (int i = 0; i < anzahlIndividuen; i++) {
@@ -86,16 +87,18 @@ class Population {
         return this;
     }
 
+    static int geneLength = 18;
+
     public void crossover() {
         // Crossover probability 25%
         for (int i = 0; i < population.size(); i++) {
             if (Math.random() < 0.25) {
                 int j = (int) (Math.random() * population.size());
-                int crossOverPoint = (int) (Math.random() * 18);
+                int crossOverPoint = (int) (Math.random() * geneLength);
                 byte[] temp = Arrays.copyOfRange(population.get(i).genes, 0, crossOverPoint);
-                byte[] temp2 = Arrays.copyOfRange(population.get(j).genes, crossOverPoint, 18);
-                byte[] temp3 = new byte[18];
-                byte[] temp4 = new byte[18];
+                byte[] temp2 = Arrays.copyOfRange(population.get(j).genes, crossOverPoint, geneLength);
+                byte[] temp3 = new byte[geneLength];
+                byte[] temp4 = new byte[geneLength];
                 System.arraycopy(temp, 0, temp3, 0, temp.length);
                 System.arraycopy(temp2, 0, temp3, temp.length, temp2.length);
                 System.arraycopy(temp2, 0, temp4, 0, temp2.length);
@@ -122,7 +125,7 @@ class Population {
     public void print() {
         // Sort by fitness
         population.sort((i1, i2) -> Double.compare(i2.fitness, i1.fitness));
-        System.out.println("Generation " + generation);
+        evaluation();
         for (Individual i : population) {
             System.out.println(i.toString() + "\n");
 
@@ -133,7 +136,7 @@ class Population {
 }
 
 class Individual {
-    public byte[] genes = new byte[18];
+    public byte[] genes = new byte[Population.geneLength];
     double fitness = 0;
     double fitnessProzent = 0;
 
