@@ -59,12 +59,20 @@ public class Population {
         for (int individualCount = 0; individualCount < this.size(); individualCount++) {
             selector.add(this.getIndividual(individualCount).getFitness(), this.getIndividual(individualCount));
         }
-        Population newPopulation = new Population(this.size(), this.getIndividual(0).getChromosomeLength(),
-                this.expectedChromosome);
+        // Population newPopulation = new Population(this.size(),
+        // this.getIndividual(0).getChromosomeLength(),
+        // this.expectedChromosome);
+        // for (int individualCount = 0; individualCount < this.size();
+        // individualCount++) {
+        // newPopulation.saveIndividual(individualCount, selector.next());
+        // }
+        // return newPopulation;
+        Individual[] newIndividuals = new Individual[this.size()];
         for (int individualCount = 0; individualCount < this.size(); individualCount++) {
-            newPopulation.saveIndividual(individualCount, selector.next());
+            newIndividuals[individualCount] = selector.next();
         }
-        return newPopulation;
+        this.individuals = newIndividuals;
+        return this;
     }
 
     public void mutation() {
